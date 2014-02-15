@@ -1,4 +1,4 @@
 GalaxyQuest2
 ============
 
-For our algos
+Algorithms and process python files for GalaxyZoo/Kaggle competition
