@@ -124,3 +124,23 @@ def asymmetry(image):
     rotated180Y[i] = i[50]
 
 asymmetry(trainImgs)
+
+
+trainImgs = "/Desktop/Copy/HackReactor/GalaxyQuest2/images/image1"
+
+def brightnessRatios(image):
+    img = Image.open(image).convert('L')
+    resizedimg = img[137:287, 137:287]
+#    resized = resize(resizedimg, (100,100))
+    stat = ImageStat.Stat(resizedimg)
+    averageBrightness = stat.mean[0]
+    sections = []
+    for i in range(75):
+        section25 = img[75 - i:75 + i, 75 - i:75 + i]
+        section75 = img[75 - i:75 + i, 75 - i:75 + i]
+        if ImageStat.Stat(section75) <= stat * 0.75:
+            sections[0] = section75
+        if ImageStat.Stat(section25) <= stat * 0.25:
+            sections[1] = section25
+    brightnessRatio = sections[0]/sections[1]
+    return brightnessRatio
