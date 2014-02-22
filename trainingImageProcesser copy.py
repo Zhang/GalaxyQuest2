@@ -98,10 +98,10 @@ from math import sqrt
 #############################################################
 #Path to Training pics Library
 trainImgs = "/Users/sonali/Desktop/Copy/HackReactor/GalaxyQuest2/images/image1.jpg"
-
+#Working, but Y lines (450) are in different format as X lines (3x150).
 def asymmetry(image):
   img = Image.open(image).convert('RGB')
-  resizedimg = img.crop((138,138,288,288)) 
+  resizedimg = img.crop((138,138,288,288))
   rotated90 = resizedimg.rotate(90)
   rotated180 = resizedimg.rotate(180)
   imgArr1 = np.array(resizedimg)
@@ -110,16 +110,21 @@ def asymmetry(image):
   originalX = imgArr1[75]
   rotated90X = imgArr2[75]
   rotated180X = imgArr3[75]
-  originalY = []
-  rotated90Y = []
-  rotated180Y = []
   for i in range(imgArr1.shape[0]):
-    originalY.append(imgArr1[i][75])
+      if i == 0:
+          originalY = imgArr1[i][75]
+      else:
+          originalY = np.append(originalY, imgArr1[i][75])
   for i in range(imgArr2.shape[0]):
-    rotated90Y.append(imgArr2[i][75])
+      if i == 0:
+          rotated90Y = imgArr2[i][75]
+      else:
+          rotated90Y = np.append(rotated90Y, imgArr2[i][75])
   for i in range(imgArr3.shape[0]):
-    rotated180Y.append(imgArr3[i][75])
-  print ([originalX, rotated90X, rotated180X, originalY, rotated90Y, rotated180Y])
+    if i == 0:
+        rotated180Y = imgArr3[i][75]
+    else:
+        rotated180Y = np.append(rotated180Y, imgArr3[i][75])
 
 asymmetry(trainImgs)
 ##############################################################
