@@ -104,21 +104,21 @@ def asymmetry(image):
   resizedimg = img.crop((138,138,288,288)) 
   rotated90 = resizedimg.rotate(90)
   rotated180 = resizedimg.rotate(180)
-  i1 = np.array(resizedimg)
-  i2 = np.array(rotated90)
-  i3 = np.array(rotated180)
-  originalX = i1[75]
-  rotated90X = i2[75]
-  rotated180X = i3[75]
+  imgArr1 = np.array(resizedimg)
+  imgArr2 = np.array(rotated90)
+  imgArr3 = np.array(rotated180)
+  originalX = imgArr1[75]
+  rotated90X = imgArr2[75]
+  rotated180X = imgArr3[75]
   originalY = []
   rotated90Y = []
   rotated180Y = []
-  for i in range(i1.shape[0]):
-    originalY.append(i1[i][75])
-  for i in range(i2.shape[0]):
-    rotated90Y.append(i2[i][75])
-  for i in range(i3.shape[0]):
-    rotated180Y.append(i3[i][75])
+  for i in range(imgArr1.shape[0]):
+    originalY.append(imgArr1[i][75])
+  for i in range(imgArr2.shape[0]):
+    rotated90Y.append(imgArr2[i][75])
+  for i in range(imgArr3.shape[0]):
+    rotated180Y.append(imgArr3[i][75])
   print ([originalX, rotated90X, rotated180X, originalY, rotated90Y, rotated180Y])
 
 asymmetry(trainImgs)
@@ -146,13 +146,13 @@ def brightnessRatios(image):
 #    distance25 = 0
     for i in range(1,75):
         section25 = resizedimg.crop((75-i, 75-i, 75+i, 75+i))
-        if totalBrightness((0,0),i+1,section25) >= brightnessTotal * 0.25:
+        if totalBrightness((0,0),2*i,section25) >= brightnessTotal * 0.25:
             sections.append(i+1)
             distance25 = i
             break
     for i in range(distance25, 75):
         section75 = resizedimg.crop((75-i, 75-i, 75+i, 75+i)) 
-        if totalBrightness((0,0),i+1,section75) >= brightnessTotal * 0.75:
+        if totalBrightness((0,0),2*i,section75) >= brightnessTotal * 0.75:
             sections.append(i+1)
             break
         if i == 74:
