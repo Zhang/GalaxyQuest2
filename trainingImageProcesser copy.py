@@ -5,7 +5,6 @@ Created on Wed Feb 19 09:53:44 2014
 @author: kwyn
 """
 import os
-import os.path
 import csv as csv
 import numpy as np
 from skimage import io
@@ -19,7 +18,6 @@ from skimage.draw import ellipse_perimeter
 import scipy
 import math
 from math import sqrt
-from PIL import ImageStat
 
 ################################################################
 ##Gets average color
@@ -127,17 +125,6 @@ from PIL import ImageStat
 #
 #asymmetry(trainImgs)
 
-#def get_brightest_pixel((x,y), n, image): 
-#    brightness = 0
-#    count = 0
-#    for s in range(x, x+n+1):
-#        for t in range(y, y+n+1):
-#            pixlr, pixlg, pixlb = image[s, t]
-#            brightPix = pixlr+pixlg+pixlb
-#            if brightPix > brightness:
-#              brightness = brightPix
-#            count += 1
-#    return brightness/3
 trainImgs = "/Users/sonali/Desktop/Copy/HackReactor/GalaxyQuest2/images/image1.jpg"
 def totalBrightness((x,y), n, image):
     brightness = 0
