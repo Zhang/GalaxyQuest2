@@ -74,7 +74,7 @@ with open(outputFilename, 'wb') as csvfile:
   for root, dirs, files in os.walk(inputImgs):
   #sort file names into numeric order
     files = sorted(files)
-    for f in files[0:10]:
+    for f in files[0:10000]:
       galName = np.array(f[:-4])
       path = inputImgs + f
       asym = asymmetry(path)

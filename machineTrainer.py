@@ -19,42 +19,51 @@ from math import sqrt
 
 ###############################################################
 #Reads features from training data
-features_raw = pd.read_csv("/home/kwyn/GalaxyQuest/Data/Test4.csv", delimiter=',')
-features = np.array(features_raw)
+features_raw1 = pd.read_csv("/Users/hackreactor1/Desktop/GalaxyQuest2/Data/AsymFeatures.csv", delimiter=',', nrows = 10000)
+features1 = np.array(features_raw1)
+
+features_raw2 = pd.read_csv("/Users/hackreactor1/Desktop/GalaxyQuest2/Data/AllFeatures.csv", delimiter=',', nrows = 10000)
+features2 = np.array(features_raw2)
+
+features = np.column_stack((features1, features2[0:10000, 1:406]))
+joblib.dump(features, 'Data/features')
+
 print features.shape
 ###############################################################
 
 ###############################################################
 #Reads results from training data
-data_raw = pd.read_csv("/home/kwyn/GalaxyQuest/TrainingData/training_solutions_rev1.csv", delimiter=',',index_col=0)
+data_raw = pd.read_csv("/Users/hackreactor1/Desktop/GalaxyQuest2/training_solutions_rev1.csv", delimiter=',',index_col=0)
 data = np.array(data_raw)
 print data.shape
 ###############################################################
 
 ###############################################################
 #Reads features from test data
+'''
 test_raw = pd.read_csv("/home/kwyn/GalaxyQuest/Data/TestMe.csv", delimiter=',')
 test = np.array(test_raw)
 print test.shape
+'''
 ###############################################################
 
 ###############################################################
 #Generates our random forest
-
-rfr = RandomForestRegressor(n_estimators=400, max_depth=9, max_features=30, n_jobs=6)
-featureFitting = features[0:10000, 1:406]
-fitData = data[0:10000]
+print 'fitting ... '
+rfr = RandomForestRegressor(n_estimators=100, max_features=50)
+featureFitting = features[0:7000, 1:412]
+fitData = data[0:7000]
 rfr.fit(featureFitting, fitData)
 
 ###############################################################
 
 ###############################################################
-
+'''
 predictData = test[0:79975, 1:406]
 predict = rfr.predict(predictData)
 prediction = np.column_stack((test[0:79975, 0:1],predict))
 joblib.dump(prediction, 'Solutions/output')
-
+'''
 ###############################################################
 
 ###############################################################
@@ -73,9 +82,9 @@ with open('Solutions/TestSubmission.csv', 'wb') as csvfile:
 
 ###############################################################
 #Testing our model against training data
-'''
-samplePredictions = rfr.predict(features[7000:10000, 1:406])
+print 'predicting ...'
+samplePredictions = rfr.predict(features[7000:10000, 1:412])
 print samplePredictions.shape
 print sqrt(mean_squared_error(data[7000:10000], samplePredictions))
-'''
+
 ###############################################################

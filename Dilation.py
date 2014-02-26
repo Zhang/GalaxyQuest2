@@ -26,9 +26,9 @@ trainImgs = '/Users/hackreactor1/Desktop/GalaxyQuest2/images_training_rev1/'
 testImgs = '/Users/hackreactor1/Desktop/GalaxyQuest2/images_test_rev1/'
 inputImgs = trainImgs
 
-outputFilename = 'Data/SkelFeatures.csv'
+outputFilename = 'Data/DilationFeatures.csv'
 
-#numFeatures = 22501
+numFeatures = 22501
 
 #Don't forget to change the file range in the following line - (for f in files[0:1000]:)
 
@@ -39,19 +39,19 @@ outputFilename = 'Data/SkelFeatures.csv'
 #Looping through the trainImgs directory
 with open(outputFilename, 'wb') as csvfile:
   writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-#  a = [0] * numFeatures
-#  writer.writerow(a)
+  a = [0] * numFeatures
+  writer.writerow(a)
   for root, dirs, files in os.walk(inputImgs):
   #sort file names into numeric order
     files = sorted(files)
-    for f in files[0:1]:
+    for f in files[0:10000]:
       galName = np.array(f[:-4])
       path = inputImgs + f
       img = io.imread(path, as_grey=True)
-      resized = im[137:287,137:287]
+      resized = img[137:287,137:287]
       selem = disk(6)
       d = dilation(resized, selem)
-      i = np.vstack(sk)
+      i = np.vstack(d)
       flat = i.flatten()
       total = np.append(galName, flat)
       writer.writerow(total)
