@@ -19,7 +19,7 @@ import scipy
 import math
 from math import sqrt
 from skimage import img_as_bool
-from skimage.morphology import skeletonize
+from skimage.morphology import dilation, disk
 
 ###############################################################
 trainImgs = '/Users/hackreactor1/Desktop/GalaxyQuest2/images_training_rev1/'
@@ -28,7 +28,7 @@ inputImgs = trainImgs
 
 outputFilename = 'Data/SkelFeatures.csv'
 
-numFeatures = 22501
+#numFeatures = 22501
 
 #Don't forget to change the file range in the following line - (for f in files[0:1000]:)
 
@@ -39,18 +39,18 @@ numFeatures = 22501
 #Looping through the trainImgs directory
 with open(outputFilename, 'wb') as csvfile:
   writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-  a = [0] * numFeatures
-  writer.writerow(a)
+#  a = [0] * numFeatures
+#  writer.writerow(a)
   for root, dirs, files in os.walk(inputImgs):
   #sort file names into numeric order
     files = sorted(files)
-    for f in files[0:10000]:
+    for f in files[0:1]:
       galName = np.array(f[:-4])
       path = inputImgs + f
       img = io.imread(path, as_grey=True)
       resized = im[137:287,137:287]
-      im = ~img_as_bool(resized)
-      sk = skeletonize(im)
+      selem = disk(6)
+      d = dilation(resized, selem)
       i = np.vstack(sk)
       flat = i.flatten()
       total = np.append(galName, flat)
