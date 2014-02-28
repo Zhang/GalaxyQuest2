@@ -18,49 +18,20 @@ from skimage.draw import ellipse_perimeter
 import scipy
 import math
 from math import sqrt
+from skimage.morphology import dilation, disk
 
 ###############################################################
 trainImgs = '/home/kwyn/GalaxyQuest2/images_training_rev1/'
 testImgs = '/home/kwyn/GalaxyQuest2/images_test_rev1/'
-inputImgs = trainImgs
+inputImgs = testImgs
 
-outputFilename = '/home/kwyn/GalaxyQuest2/Data/TRAINAsymFeatures.csv'
+outputFilename = '/home/kwyn/GalaxyQuest2/Data/TESTDilationFeatures.csv'
 
-numFeatures = 7
+numFeatures = 401
 
 #Don't forget to change the file range in the following line - (for f in files[0:1000]:)
 
 ###############################################################
-
-###############################################################
-def get_average_brightness(array):
-
-    count = 0
-    brightness = 0
-    for s in range(150):
-    	brightness += array[s]
-    	count+=1
-    return (brightness/count)
-
-#Working, but Y lines (450) are in different format as X lines (3x150).
-def asymmetry(image):
-  img = io.imread(path)
-  resizedimg = img[137:287,137:287]
-  gimg = color.colorconv.rgb2grey(resizedimg)
-  rotated90 = np.rot90(gimg, k=1)
-  imgArr1 = gimg
-  imgArr2 = rotated90
-  #Calculating average brightnesses of vert, horiz and one diagonal line
-  originalX = get_average_brightness(imgArr1[75])
-  originalY = get_average_brightness(imgArr1[0:150, 75])
-  originalDiag1 = get_average_brightness(np.diagonal(imgArr1))
-  
-  rotated90X = get_average_brightness(imgArr2[75])
-  rotated90Y = get_average_brightness(imgArr2[0:150, 75])
-  rotated90Diag = get_average_brightness(np.diagonal(imgArr2))
-
-  return originalX, originalY, originalDiag1, rotated90X, rotated90Y, rotated90Diag
-  
 
 ###############################################################
 #Writes features to CSV
@@ -77,6 +48,12 @@ with open(outputFilename, 'wb') as csvfile:
     for f in files:
       galName = np.array(f[:-4])
       path = inputImgs + f
-      asym = asymmetry(path)
-      total = np.append(galName, asym)
+      img = io.imread(path, as_grey=True)
+      cropped = img[137:287,137:287]
+      resized = resize(cropped, (20,20))
+      selem = disk(6)
+      d = dilation(resized, selem)
+      i = np.vstack(d)
+      flat = i.flatten()
+      total = np.append(galName, flat)
       writer.writerow(total)

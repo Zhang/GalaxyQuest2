@@ -4,7 +4,8 @@ Created on Wed Feb 19 09:53:44 2014
 
 @author: kwyn
 """
-import os
+import os 
+
 import csv as csv
 import numpy as np
 from skimage import io
@@ -18,49 +19,21 @@ from skimage.draw import ellipse_perimeter
 import scipy
 import math
 from math import sqrt
+from skimage import img_as_bool
+from skimage.morphology import dilation, disk, skeletonize
 
 ###############################################################
 trainImgs = '/home/kwyn/GalaxyQuest2/images_training_rev1/'
 testImgs = '/home/kwyn/GalaxyQuest2/images_test_rev1/'
 inputImgs = trainImgs
 
-outputFilename = '/home/kwyn/GalaxyQuest2/Data/TRAINAsymFeatures.csv'
+outputFilename = '/home/kwyn/GalaxyQuest2/Data/TRAINSkeletonFeatures.csv'
 
-numFeatures = 7
+numFeatures = 401
 
 #Don't forget to change the file range in the following line - (for f in files[0:1000]:)
 
 ###############################################################
-
-###############################################################
-def get_average_brightness(array):
-
-    count = 0
-    brightness = 0
-    for s in range(150):
-    	brightness += array[s]
-    	count+=1
-    return (brightness/count)
-
-#Working, but Y lines (450) are in different format as X lines (3x150).
-def asymmetry(image):
-  img = io.imread(path)
-  resizedimg = img[137:287,137:287]
-  gimg = color.colorconv.rgb2grey(resizedimg)
-  rotated90 = np.rot90(gimg, k=1)
-  imgArr1 = gimg
-  imgArr2 = rotated90
-  #Calculating average brightnesses of vert, horiz and one diagonal line
-  originalX = get_average_brightness(imgArr1[75])
-  originalY = get_average_brightness(imgArr1[0:150, 75])
-  originalDiag1 = get_average_brightness(np.diagonal(imgArr1))
-  
-  rotated90X = get_average_brightness(imgArr2[75])
-  rotated90Y = get_average_brightness(imgArr2[0:150, 75])
-  rotated90Diag = get_average_brightness(np.diagonal(imgArr2))
-
-  return originalX, originalY, originalDiag1, rotated90X, rotated90Y, rotated90Diag
-  
 
 ###############################################################
 #Writes features to CSV
@@ -74,9 +47,17 @@ with open(outputFilename, 'wb') as csvfile:
   for root, dirs, files in os.walk(inputImgs):
   #sort file names into numeric order
     files = sorted(files)
-    for f in files:
+    for f in files[0:10000]:
       galName = np.array(f[:-4])
       path = inputImgs + f
-      asym = asymmetry(path)
-      total = np.append(galName, asym)
+      img = io.imread(path, as_grey=True)
+      cropped = img[137:287,137:287]
+      resized = resize(cropped, (20,20))
+      im = ~img_as_bool(resized)
+#      selem = disk(6) 
+#      d = dilation(resized, selem)
+      sk = skeletonize(im)
+      i = np.vstack(sk)
+      flat = i.flatten()
+      total = np.append(galName, flat)
       writer.writerow(total)

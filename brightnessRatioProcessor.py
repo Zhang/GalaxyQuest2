@@ -20,13 +20,13 @@ import math
 from math import sqrt
 
 ###############################################################
-trainImgs = '/Users/hackreactor1/Desktop/GalaxyQuest2/images_training_rev1/'
-testImgs = '/Users/hackreactor1/Desktop/GalaxyQuest2/images_test_rev1/'
+trainImgs = '/home/kwyn/GalaxyQuest2/images_training_rev1/'
+testImgs = '/home/kwyn/GalaxyQuest2/images_test_rev1/'
 inputImgs = trainImgs
 
-outputFilename = 'Data/Features100.csv'
+outputFilename = '/home/kwyn/GalaxyQuest2/Data/TRAINbrightnessRatioFeatures.csv'
 
-numFeatures = 22501
+numFeatures = 2
 
 #Don't forget to change the file range in line 85 (for f in files[0:1000]:)
 
@@ -82,9 +82,9 @@ with open(outputFilename, 'wb') as csvfile:
   for root, dirs, files in os.walk(inputImgs):
   #sort file names into numeric order
     files = sorted(files)
-    for f in files[0:1000]:
+    for f in files:
       galName = np.array(f[:-4])
       path = inputImgs + f
-	  br = brightnessRatios(path) 
+      br = brightnessRatios(path)
       total = np.append(galName, br)
       writer.writerow(total)
