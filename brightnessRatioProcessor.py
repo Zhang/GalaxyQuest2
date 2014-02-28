@@ -20,6 +20,7 @@ import math
 from math import sqrt
 
 ###############################################################
+
 trainImgs = '/home/kwyn/GalaxyQuest2/images_training_rev1/'
 testImgs = '/home/kwyn/GalaxyQuest2/images_test_rev1/'
 inputImgs = trainImgs

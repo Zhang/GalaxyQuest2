@@ -35,6 +35,7 @@ preddump = 'Predictions/pred-AllAsymDil'
 
 ###############################################################
 #Reads features from training data
+
 '''
 print 'reading allfeatures ...'
 allfeatures_raw = pd.read_csv('/home/kwyn/GalaxyQuest2/Data/TRAINAllFeatures.csv', delimiter=',')
@@ -59,8 +60,12 @@ features = np.array(features_raw)
 
 ###############################################################
 #Reads results from training data
+
 '''
 data_raw = pd.read_csv(trainSols, delimiter=',',index_col=0)
+=======
+data_raw = pd.read_csv("/Users/hackreactor1/Desktop/GalaxyQuest2/training_solutions_rev1.csv", delimiter=',',index_col=0)
+>>>>>>> add300cb0cca1eb7ed212b9058dd2c6d7be609f1
 data = np.array(data_raw)
 print data.shape
 '''
@@ -68,6 +73,7 @@ print data.shape
 
 ###############################################################
 #Reads features from test data
+
 
 '''
 tallfeatures_raw = pd.read_csv('/home/kwyn/GalaxyQuest2/Data/TESTAllFeatures.csv', delimiter=',')
@@ -127,6 +133,7 @@ headerRow = 'GalaxyID,Class1.1,Class1.2,Class1.3,Class2.1,Class2.2,Class3.1,Clas
 formatting = '%d,%f.%f,%f,%f,%f,%f.%f,%f,%f,%f,%f.%f,%f,%f,%f,%f.%f,%f,%f,%f,%f.%f,%f,%f,%f,%f.%f,%f,%f,%f,%f.%f,%f,%f,%f,%f,$f'
 np.savetext(solutionfilename, prediction, fmt=formatting, delimiter=',', newline='\n', header=headerRow, footer='', comments='')
 '''
+
 ###############################################################
 
 ###############################################################
